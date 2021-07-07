@@ -23,8 +23,7 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
-    private var _binding: MainFragmentBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: MainFragmentBinding
 
 
     override fun onCreateView(
@@ -32,12 +31,12 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        binding = MainFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+
     }
 
 
@@ -53,37 +52,39 @@ class MainFragment : Fragment() {
         when (appState) {
             is AppState.Success -> {
                 val weatherData = appState.weatherData
-                loadingLayout.visibility = View.GONE
+                binding.loadingLayout.visibility = View.GONE
                 setData(weatherData)
 
             }
             is AppState.Loading -> {
-                loadingLayout.visibility = View.VISIBLE
+                binding.loadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
-                loadingLayout.visibility = View.GONE
-                Snackbar
-                    .make(mainView, "Error", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Reload") { viewModel.getWeather() }
-                    .show()
+                binding.loadingLayout.visibility = View.GONE
+                binding.mainView.let {
+                    Snackbar
+                        .make(it, "Error", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Reload") { viewModel.getWeather() }
+                        .show()
+                }
             }
         }
     }
 
-    fun getData(): LiveData<Any> {
-        getDataFromLocalSource()
-        return liveDataToObserve
-    }
+   // fun getData(): LiveData<Any> {
+   //     getDataFromLocalSource()
+   //     return liveDataToObserve
+   // }
 
 
-    private fun getDataFromLocalSource() {
-        Thread {
-            sleep(1000)
-            liveDataToObserve.postValue(Any())
-        }.start()
-    }
+   // private fun getDataFromLocalSource() {
+   //     Thread {
+   //         sleep(1000)
+   //         liveDataToObserve.postValue(Any())
+   //     }.start()
+   // }
 
-    private fun setData(weatherData: Weather) {
+    private fun setData(weatherData: Weather) = with(binding) {
         cityName.text = weatherData.city.city
         cityCoordinates.text = String.format(
             getString(R.string.city_coordinates),
