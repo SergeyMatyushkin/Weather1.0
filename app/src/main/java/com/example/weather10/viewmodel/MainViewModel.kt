@@ -14,16 +14,28 @@ class MainViewModel (
     ViewModel() {
 
     fun getLiveData() = liveDataToObserve
-    fun getWeatherFromLocalSource() = getWeather()
-    fun getWeatherFromRemoteSource() = getWeather()
+    fun getWeatherFromLocalSourceRus() = getDataFromLocalSource(isRussian = true)
+    fun getWeatherFromLocalSourceWorld() = getDataFromLocalSource(isRussian =
+    false)
+    fun getWeatherFromRemoteSource() = getDataFromLocalSource(isRussian = true)
 
-    fun getWeather() {
+
+  //  fun getWeather() {
+  //      liveDataToObserve.value = AppState.Loading
+  //      Thread {
+  //          sleep(1000)
+  //          liveDataToObserve.postValue(AppState.Success(repository.getWeatherFromLocalStorage()))
+  //      }.start()
+  //  }
+
+    private fun getDataFromLocalSource(isRussian: Boolean) {
         liveDataToObserve.value = AppState.Loading
         Thread {
             sleep(1000)
-            liveDataToObserve.postValue(AppState.Success(repository.getWeatherFromLocalStorage()))
+            liveDataToObserve.postValue(AppState.Success(if (isRussian)
+                repository.getWeatherFromLocalStorageRus() else
+                repository.getWeatherFromLocalStorageWorld()))
         }.start()
     }
-
 
 }

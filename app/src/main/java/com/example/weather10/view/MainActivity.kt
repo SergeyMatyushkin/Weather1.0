@@ -1,11 +1,10 @@
 package com.example.weather10.view
 
-import androidx.appcompat.app.AppCompatActivity
+import MainFragment
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.weather10.R
 import com.example.weather10.databinding.MainActivityBinding
-import com.example.weather10.databinding.MainFragmentBinding
-import com.example.weather10.view.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,12 +19,7 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, MainFragment.newInstance())
                 .commitNow()
         }
-//        binding = MainActivityBinding.inflate(layoutInflater)
-//        val view = binding.root
-//        setContentView(view)
 
     }
-
-
 
 }
