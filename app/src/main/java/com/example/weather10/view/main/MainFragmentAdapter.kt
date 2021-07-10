@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather10.R
 import com.example.weather10.model.Weather
 
-class MainFragmentAdapter :
+class MainFragmentAdapter (private var onItemViewClickListener:
+                           MainFragment.OnItemViewClickListener) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
     private var weatherData: List<Weather> = listOf()
+
     fun setWeather(data: List<Weather>) {
         weatherData = data
         notifyDataSetChanged()
@@ -23,7 +25,7 @@ class MainFragmentAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MainFragmentAdapter.MainViewHolder {
+    ): MainViewHolder {
         return MainViewHolder(
             LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_main_recycler_item, parent, false) as
@@ -43,18 +45,19 @@ class MainFragmentAdapter :
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view){
+
         fun bind(weather: Weather) {
             itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text =
                 weather.city.city
             itemView.setOnClickListener {
-                Toast.makeText(
-                    itemView.context,
-                    weather.city.city,
-                    Toast.LENGTH_LONG
-                ).show()
+                onItemViewClickListener?.onItemViewClick(weather)
             }
 
         }
     }
+   // fun removeListener() {
+   //     onItemViewClickListener = null
+   // }
+
 }
 
