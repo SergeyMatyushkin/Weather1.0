@@ -4,13 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather10.R
 import com.example.weather10.model.Weather
 
-class MainFragmentAdapter (private var onItemViewClickListener:
-                           MainFragment.OnItemViewClickListener) :
+class MainFragmentAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
     private var weatherData: List<Weather> = listOf()
@@ -20,7 +18,7 @@ class MainFragmentAdapter (private var onItemViewClickListener:
         notifyDataSetChanged()
     }
 
-
+    //создание элемента списка
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -30,34 +28,32 @@ class MainFragmentAdapter (private var onItemViewClickListener:
                 .inflate(R.layout.fragment_main_recycler_item, parent, false) as
                     View
         )
-
     }
 
-
+    //в элемент списка кладем значения
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder.bind(weatherData[position])
     }
 
+    //получение количества элементов
     override fun getItemCount(): Int {
         return weatherData.size
+    }
 
+    fun removeListener() {
+        onItemViewClickListener = null
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
+        //задаем значения при нажатии на элемент списка
         fun bind(weather: Weather) {
+            //apply - применяем findViewById и setOnClickListener к itemView
+            //чтобы не было повторов
             itemView.apply {
                 findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text =
                     weather.city.city
-                setOnClickListener {
-                    onItemViewClickListener?.onItemViewClick(weather)
-                }
-
+                setOnClickListener { onItemViewClickListener?.onItemViewClick(weather) }
             }
         }
-        // fun removeListener() {
-        //     onItemViewClickListener = null
-        // }
     }
 }
-
