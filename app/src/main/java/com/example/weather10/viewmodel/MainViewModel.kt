@@ -2,17 +2,18 @@ package com.example.weather10.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.weather10.model.Repository
-import com.example.weather10.model.RepositoryImpl
+import com.example.weather10.repository.MainRepository
+import com.example.weather10.repository.MainRepositoryImpl
+
 import java.lang.Thread.sleep
 
 class MainViewModel(
     private val liveDataToObserve: MutableLiveData<Any> = MutableLiveData(),
-    private val repositoryImpl: Repository = RepositoryImpl()
+    private val repositoryImpl: MainRepository = MainRepositoryImpl()
 ) :
     ViewModel() {
 
-
+    //получение LiveData
     fun requestLiveData() = liveDataToObserve
 
     //получение данных погоды русских и зарубежных городов из локального источника

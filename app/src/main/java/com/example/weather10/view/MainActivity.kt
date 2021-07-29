@@ -17,14 +17,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //binding.ok.setOnClickListener(clickListener)
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance())
                 .commitAllowingStateLoss()
         }
-
-        //регистрируем MainBroadcastReceiver
+        //регистрируем наш MainBroadcastReceiver программно(в майнактивити)
         //подписываемся на сообщение перехода в режим самолета
         registerReceiver(receiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
     }
@@ -33,6 +33,5 @@ class MainActivity : AppCompatActivity() {
         //отписываемся от сообщения перехода в режим самолета
         unregisterReceiver(receiver)
         super.onDestroy()
-
     }
 }

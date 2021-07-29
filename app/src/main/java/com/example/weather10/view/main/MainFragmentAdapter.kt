@@ -18,7 +18,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: MainFragment.OnIt
         notifyDataSetChanged()
     }
 
-    //создание элемента списка
+    //создание вьюшки(элемента списка)
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -32,6 +32,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: MainFragment.OnIt
 
     //в элемент списка кладем значения
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
+        //раньше писали holder.bind(weatherData.get(position))
         holder.bind(weatherData[position])
     }
 

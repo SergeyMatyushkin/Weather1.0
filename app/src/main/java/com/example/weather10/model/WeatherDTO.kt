@@ -4,7 +4,8 @@ data class WeatherDTO (
     val fact: FactDTO?
 )
 data class FactDTO(
-    val temp: Int?,
-    val feels_like: Int?,
-    val condition: String?
+    val temperature: Int?,
+    val feelsLike: Int?,
+    val condition: String?,
+    val icon: String?
 )

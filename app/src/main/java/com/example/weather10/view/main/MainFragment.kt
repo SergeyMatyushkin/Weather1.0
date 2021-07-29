@@ -12,6 +12,7 @@ import com.example.weather10.model.Weather
 import com.example.weather10.view.details.DetailsFragment
 import com.example.weather10.viewmodel.AppState
 import com.example.weather10.viewmodel.MainViewModel
+
 import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
@@ -24,12 +25,14 @@ class MainFragment : Fragment() {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-
+    //флаг: следит за "подгрузкой" данных
     private var isDataSetRus: Boolean = true
 
+    //создаем интерфейс(через object) и передаем его в адаптер
     private val adapter = MainFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(weather: Weather) {
-
+            //к менеджеру фрагментов обращаемся через activity
+            //вместо проверки if (manager != null) -> ставим ? перед apply
             activity?.supportFragmentManager?.apply {
                 beginTransaction()
                     .add(R.id.container, DetailsFragment.newInstance(Bundle().apply {
@@ -46,7 +49,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding.getRoot()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -93,7 +96,8 @@ class MainFragment : Fragment() {
         }
     }
 
-
+    // Создадим extension-функцию для Snackbar (при ошибке приложения)
+    // будем ее использовать в renderData у корневого экрана fragment_main.xml
     private fun View.showSnackBar(
         text: String,
         actionText: String,
@@ -103,7 +107,7 @@ class MainFragment : Fragment() {
         Snackbar.make(this, text, length).setAction(actionText, action).show()
     }
 
-
+    //этот интерфейс использует холдер
     interface OnItemViewClickListener {
         fun onItemViewClick(weather: Weather)
     }
