@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".view.details.DetailsService" />
 
         <receiver android:name=".view.MainBroadcastReceiver">
             <intent-filter>

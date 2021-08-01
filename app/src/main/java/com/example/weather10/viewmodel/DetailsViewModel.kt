@@ -17,7 +17,7 @@ private const val CORRUPTED_DATA = "Неполные данные"
 
 class DetailsViewModel(
     //создаём LiveData для передачи данных
-    val detailsLiveData: MutableLiveData<AppState> = MutableLiveData(),
+    val detailsLiveData: MutableLiveData<ScreenState> = MutableLiveData(),
     //создаем репозиторий для получения данных
     private val detailsRepositoryImpl: DetailsRepository =
         DetailsRepositoryImpl(RemoteDataSource())
@@ -28,7 +28,7 @@ class DetailsViewModel(
 
     //метод осуществляет запрос на сервер через репозиторий
     fun requestWeatherFromRemoteSource(lat: Double, lon: Double) {
-        detailsLiveData.value = AppState.Loading
+        detailsLiveData.value = ScreenState.Loading
         detailsRepositoryImpl.getWeatherDetailsFromServer(lat, lon, callBack)
     }
 
@@ -46,7 +46,7 @@ class DetailsViewModel(
                 if (response.isSuccessful && serverResponse != null) {
                     checkResponse(serverResponse)
                 } else {
-                    AppState.Error(Throwable(SERVER_ERROR))
+                    ScreenState.Error(Throwable(SERVER_ERROR))
                 }
             )
         }
@@ -54,7 +54,7 @@ class DetailsViewModel(
         // Вызывается при сбое в процессе запроса на сервер
         override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
             detailsLiveData.postValue(
-                AppState.Error(
+                ScreenState.Error(
                     Throwable(
                         t.message ?: REQUEST_ERROR
                     )
@@ -63,14 +63,15 @@ class DetailsViewModel(
         }
 
         //проверяем ответ
-        private fun checkResponse(serverResponse: WeatherDTO): AppState {
-            val fact = serverResponse.fact
-            return if (fact == null || fact.temperature == null || fact.feelsLike ==
-                null || fact.condition.isNullOrEmpty()
+        private fun checkResponse(serverResponse: WeatherDTO): ScreenState {
+            val fact = serverResponse.factInfo
+            return if (fact?.temperature == null || fact.feels_like == null ||
+                fact.condition.isNullOrEmpty()
+
             ) {
-                AppState.Error(Throwable(CORRUPTED_DATA))
+                ScreenState.Error(Throwable(CORRUPTED_DATA))
             } else {
-                AppState.Success(convertDtoToModel(serverResponse))
+                ScreenState.Success(convertDtoToModel(serverResponse))
             }
         }
     }

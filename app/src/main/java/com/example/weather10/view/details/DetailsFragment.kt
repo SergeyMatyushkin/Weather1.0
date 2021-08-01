@@ -1,33 +1,20 @@
 package com.example.weather10.view.details
 
-import android.os.Build
-import android.os.Handler
 import androidx.lifecycle.ViewModelProvider
-import com.example.weather10.BuildConfig
-import com.google.gson.Gson
-import okhttp3.*
-import java.io.IOException
-import com.example.weather10.viewmodel.AppState
+import com.example.weather10.viewmodel.ScreenState
 import com.example.weather10.viewmodel.DetailsViewModel
 import com.squareup.picasso.Picasso
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.weather10.R
 import com.example.weather10.databinding.FragmentDetailsBinding
 import com.example.weather10.model.Weather
-import com.example.weather10.model.WeatherDTO
-
+import com.google.android.material.snackbar.Snackbar
 
 
 private const val PROCESS_ERROR = "Обработка ошибки"
@@ -64,25 +51,42 @@ class DetailsFragment : Fragment() {
     }
 
     //обрабатываем состояние приложения и обеспечиваем корректное отображение на экране
-    private fun renderData(appState: AppState) {
+    private fun renderData(appState: ScreenState) {
         //binding.viewDetailsFragment.visibility = View.VISIBLE
         //binding.loadingLayout.visibility = View.GONE
         when (appState) {
-            is AppState.Success -> {
+            is ScreenState.Success -> {
                 binding.viewDetailsFragment.visibility = View.VISIBLE
                 binding.loadingLayout.visibility = View.GONE
                 setWeather(appState.weatherData[0])
             }
-            is AppState.Loading -> {
+            is ScreenState.Loading -> {
                 binding.viewDetailsFragment.visibility = View.GONE
                 binding.loadingLayout.visibility = View.VISIBLE
             }
-            is AppState.Error -> {
+            is ScreenState.Error -> {
                 binding.viewDetailsFragment.visibility = View.VISIBLE
                 binding.loadingLayout.visibility = View.GONE
+                binding.viewDetailsFragment.showSnackBarDetail(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    {
+                        viewModel.requestWeatherFromRemoteSource(
+                            weatherBundle.city.lat,
+                            weatherBundle.city.lon
+                        )
+                    })
 
             }
         }
+    }
+    private fun View.showSnackBarDetail(
+        text: String,
+        actionText: String,
+        action: (View) -> Unit,
+        length: Int = Snackbar.LENGTH_SHORT
+    ) {
+        Snackbar.make(this, text, length).setAction(actionText, action).show()
     }
 
     //отображвем данные
