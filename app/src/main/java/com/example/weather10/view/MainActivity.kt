@@ -1,18 +1,60 @@
-package com.example.weather10
+package com.example.weather10.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import com.example.weather10.view.MainFragment
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import com.example.weather10.R
+import com.example.weather10.databinding.MainActivityBinding
+import com.example.weather10.view.history.HistoryFragment
+import com.example.weather10.view.main.MainFragment
+
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: MainActivityBinding
+    private val receiver = MainBroadcastReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        binding = MainActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        //binding.ok.setOnClickListener(clickListener)
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
+            supportFragmentManager
+                .beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
+                .commitAllowingStateLoss()
         }
+        //регистрируем наш MainBroadcastReceiver программно(в майнактивити)
+        //подписываемся на сообщение перехода в режим самолета
+        registerReceiver(receiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_screen_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_history -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, HistoryFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onDestroy() {
+        //отписываемся от сообщения перехода в режим самолета
+        unregisterReceiver(receiver)
+        super.onDestroy()
     }
 }
