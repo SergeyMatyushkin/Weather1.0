@@ -13,6 +13,7 @@ import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import androidx.fragment.app.Fragment
 import com.example.weather10.R
 import com.example.weather10.databinding.FragmentDetailsBinding
+import com.example.weather10.model.City
 import com.example.weather10.model.Weather
 import com.google.android.material.snackbar.Snackbar
 
@@ -92,6 +93,8 @@ class DetailsFragment : Fragment() {
     //отображвем данные
     private fun setWeather(weather: Weather) {
         val city = weatherBundle.city
+        //сохраняем новый запрос в БД
+        saveCity(city, weather)
         binding.cityName.text = city.city
         binding.cityCoordinates.text = String.format(
             getString(R.string.city_coordinates),
@@ -115,6 +118,18 @@ class DetailsFragment : Fragment() {
                 binding.weatherIcon
             )
         }
+    }
+
+    //сохраняем новый запрос в БД
+    private fun saveCity(city: City, weather: Weather) {
+        viewModel.saveCityToDB(
+            Weather(
+                city,
+                weather.temperature,
+                weather.feelsLike,
+                weather.condition
+            )
+        )
     }
 
     override fun onDestroyView() {
