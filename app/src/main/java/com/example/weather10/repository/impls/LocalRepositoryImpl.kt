@@ -9,11 +9,11 @@ import com.example.weather10.view.room.HistoryEntity
 class LocalRepositoryImpl(private val localDataSource: HistoryDao) :
     LocalRepository {
     override fun getAllHistory(): List<Weather> {
-        return convertHistoryEntityToWeather(localDataSource.all())
+        return convertHistoryEntityToWeather(localDataSource.getAll())
     }
 
     override fun saveEntity(weather: Weather) {
-        localDataSource.insert(convertWeatherToEntity(weather))
+        Thread { localDataSource.insert(convertWeatherToEntity(weather)) }.start()
     }
 
     private fun convertHistoryEntityToWeather(entityList: List<HistoryEntity>):

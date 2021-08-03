@@ -6,6 +6,7 @@ import com.example.weather10.app.App.Companion.getHistoryDao
 import com.example.weather10.repository.LocalRepository
 import com.example.weather10.repository.impls.LocalRepositoryImpl
 
+
 //ViewModel для нового экрана
 class HistoryViewModel(
     val historyLiveData: MutableLiveData<ScreenState> = MutableLiveData(),

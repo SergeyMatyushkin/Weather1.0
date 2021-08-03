@@ -10,6 +10,7 @@
     <dimen name="recycler_item_padding">10dp</dimen>
     <dimen name="margin_minimum">1dp</dimen>
     <dimen name="margin_fragment_main_recycler_item_db">5dp</dimen>
+
     <dimen name="temperature_value_text_size">40sp</dimen>
     <dimen name="recycler_item_line_height">1dp</dimen>
     <dimen name="recycler_item_line_margin_end">20dp</dimen>

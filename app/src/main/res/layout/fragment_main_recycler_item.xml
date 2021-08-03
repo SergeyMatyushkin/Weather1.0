@@ -17,7 +17,7 @@
         tools:text="@string/Moscow" />
     <View
         android:layout_width="match_parent"
-        android:layout_height="@margin_minimum"
+        android:layout_height="@dimen/margin_minimum"
         android:layout_marginEnd="@dimen/recycler_item_line_margin_end"
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"

@@ -6,9 +6,9 @@ import com.example.weather10.model.Weather
 import com.example.weather10.model.WeatherDTO
 import com.example.weather10.model.convertDtoToModel
 import com.example.weather10.repository.DetailsRepository
-import com.example.weather10.repository.DetailsRepositoryImpl
 import com.example.weather10.repository.LocalRepository
 import com.example.weather10.repository.RemoteDataSource
+import com.example.weather10.repository.impls.DetailsRepositoryImpl
 import com.example.weather10.repository.impls.LocalRepositoryImpl
 import retrofit2.Call
 import retrofit2.Callback
