@@ -16,8 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.weather10.R
 import com.example.weather10.databinding.FragmentContentProviderBinding
-
-const val REQUEST_CODE = 42
+import com.example.weather10.view.main.REQUEST_CODE
 
 class ContentProviderFragment : Fragment() {
     private var _binding: FragmentContentProviderBinding? = null
