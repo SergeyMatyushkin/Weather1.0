@@ -6,9 +6,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.example.weather10.googlemaps.GoogleMapsFragment
 import com.example.weather10.R
 import com.example.weather10.databinding.MainActivityBinding
-import com.example.weather10.view.contentProvider.ContentProviderFragment
+
 import com.example.weather10.view.history.HistoryFragment
 import com.example.weather10.view.main.MainFragment
 
@@ -49,10 +50,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
-            R.id.menu_content_provider -> {
+            R.id.menu_google_maps -> {
                 supportFragmentManager.apply {
                     beginTransaction()
-                        .add(R.id.container, ContentProviderFragment.newInstance())
+                        .add(R.id.container, GoogleMapsFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
